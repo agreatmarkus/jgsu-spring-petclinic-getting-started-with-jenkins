@@ -1,14 +1,14 @@
 pipeline {
-  agent { docker { image 'maven:alpine' } }
+  agent { dockerfile true }
   stages {
-    stage('Log version info') {
+    stage('Version check') {
       steps {
         sh 'mvn --version'
       }
     }
     stage('Build') {
       steps {
-        sh 'mvn clean install'
+        sh 'mvn clean package'
       }
     }
   }

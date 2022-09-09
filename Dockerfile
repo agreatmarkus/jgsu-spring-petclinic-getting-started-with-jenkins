@@ -1,7 +1,7 @@
 #
 # Build stage
 #
-FROM maven:alpine as builder
+FROM maven:3.8-jdk-11 as builder
 ENV HOME=/usr/app
 RUN mkdir -p $HOME
 WORKDIR $HOME
@@ -10,7 +10,7 @@ RUN --mount=type=cache,target=/root/.mv2 mvn -f $HOME/pom.xml clean package
 #
 # Package stage
 #
-FROM openjdk:8-jdk-alpine
+FROM openjdk:20-slim-buster
 ENV HOME=/usr/app
-COPY --from=builder $HOME/target/*.jar /usr/local/lib/target/
-ENTRYPOINT ["java", "-jar", "/usr/local/lib/*.jar"]
+COPY --from=builder $HOME/target/spring-petclinic-2.3.1.BUILD-SNAPSHOT.jar /usr/local/lib/spring-petclinic.jar
+ENTRYPOINT ["java", "-jar", "/usr/local/lib/spring-petclinic.jar"]
