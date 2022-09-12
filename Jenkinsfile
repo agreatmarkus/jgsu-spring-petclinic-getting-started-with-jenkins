@@ -1,12 +1,12 @@
 pipeline {
-  agent { dockerfile true }
+  agent none
   stages {
-    stage('Version check') {
-      steps {
-        sh 'mvn --version'
-      }
-    }
     stage('Build') {
+      agent {
+        docker {
+          image 'maven:3.8-jdk-11'
+        }
+      }
       steps {
         sh 'mvn clean package'
       }
